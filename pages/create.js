@@ -9,23 +9,33 @@ export default function Create() {
     const value = event.target.value;
     setInputs((values) => ({ ...values, [name]: value }));
   };
-  var emailList = [];
-  var i;
-
+  const [list, setlist] = useState([]);
   const handleAddMember = () => {
-    emailList[i++] = inputs.email;
-    // setInputs({email:""});
+    const newList = list.concat(inputs.email);
+    setlist(newList);
+    setInputs((previousState) => {
+      return { ...previousState, email: "" };
+    });
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    alert(
+    // alert(
+    //   inputs.meetingName +
+    //     "\n" +
+    //     inputs.startDateTime +
+    //     "\n" +
+    //     inputs.endDateTime +
+    //     "\n"+list,
+    // );
+    console.log(
       inputs.meetingName +
         "\n" +
         inputs.startDateTime +
         "\n" +
         inputs.endDateTime +
-        "\n",
+        "\n" +
+        list,
     );
   };
 
