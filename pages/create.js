@@ -39,6 +39,14 @@ export default function Create() {
     );
   };
 
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      // console.log("enter");
+      event.preventDefault();
+      handleAddMember();
+    }
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
@@ -59,7 +67,7 @@ export default function Create() {
                 name="meetingName"
                 id="meetingName"
                 placeholder="Meeting Name"
-                value={inputs.meetingName}
+                value={inputs.meetingName || ""}
                 onChange={handleChange}
                 required
                 className=" w-full  border outline-none focus:border-black border-gray-200 rounded p-3 mb-4"></input>
@@ -71,7 +79,7 @@ export default function Create() {
                 type="datetime-local"
                 name="startDateTime"
                 id="startDateTime"
-                value={inputs.startDateTime}
+                value={inputs.startDateTime || ""}
                 onChange={handleChange}
                 required
                 className=" w-full  border outline-none focus:border-black border-gray-200 rounded p-3 mb-4"></input>
@@ -83,7 +91,7 @@ export default function Create() {
                 type="datetime-local"
                 name="endDateTime"
                 id="endDateTime"
-                value={inputs.endDateTime}
+                value={inputs.endDateTime || ""}
                 onChange={handleChange}
                 required
                 className=" w-full  border outline-none focus:border-black border-gray-200 rounded p-3 mb-4"></input>
@@ -96,16 +104,35 @@ export default function Create() {
                 name="email"
                 id="email"
                 placeholder="Add members"
-                value={inputs.email}
+                value={inputs.email || ""}
                 onChange={handleChange}
+                onKeyPress={handleKeyPress}
                 className=" w-full  border outline-none focus:border-black border-gray-200 rounded p-3 mb-6"></input>
 
-              <button
-                type="button"
-                onClick={handleAddMember}
-                className="w-fit border text-xs bg-blue-600 hover:bg-white transition hover:text-blue-600 hover:border-blue-600 text-white font-semibold rounded p-3 mb-6 ">
-                Add member
-              </button>
+              {/* {list.map((list, index) => (
+                <table key={index} className="border table-auto">
+                  <tr>
+                    <td>{list}</td>
+                    <td className="justify-center">
+                      <button type="button" className="w-fit border text-xs bg-blue-600 hover:bg-white transition hover:text-blue-600 hover:border-blue-600 text-white font-semibold rounded p-3 mb-6">delete</button>
+                    </td>
+                  </tr>
+                </table>
+              ))} */}
+
+              <label htmlFor="participent" className="mx-1">
+                Patricipents
+              </label>
+              <select
+                id="participent"
+                name="participent"
+                className=" w-full  border outline-none focus:border-black border-gray-200 rounded p-3 mb-6">
+                {list.map((list, index) => (
+                  <option key={index} value={list}>
+                    {list}
+                  </option>
+                ))}
+              </select>
 
               <button
                 type="submit"
