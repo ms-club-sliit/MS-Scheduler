@@ -2,49 +2,91 @@ import React, { useState } from "react";
 import { Header } from "../components";
 
 export default function Create() {
-  const [inputs, setInputs] = useState({});
+  //handle current value inserted by user
+  const [inputs, setInputs] = useState({
+    meetingName: "",
+    startDateTime: "",
+    endDateTime: "",
+    email: "",
+  });
+  //handle the emails already added
+  const [list, setlist] = useState([]);
 
+  //validate meetingName,startDateTime,endingDateTime
+  const submitValidation = () => {
+    if (inputs.meetingName == "") {
+      alert("Please input meeting name");
+      return false;
+    } else if (inputs.startDateTime == "") {
+      alert("please input Starting Date and Time");
+      return false;
+    } else if (inputs.endDateTime == "") {
+      alert("please input Ending Date and Time");
+      return false;
+    } else {
+      return true;
+    }
+  };
+
+  //handle when a user change value in a input field
   const handleChange = (event) => {
     const name = event.target.name;
     const value = event.target.value;
     setInputs((values) => ({ ...values, [name]: value }));
   };
-  const [list, setlist] = useState([]);
-  const handleAddMember = () => {
-    const newList = list.concat(inputs.email);
-    setlist(newList);
-    setInputs((previousState) => {
-      return { ...previousState, email: "" };
-    });
+
+  //handle validating and adding email to the list
+  const AddMember = () => {
+    const validEmail =
+      inputs.email.lastIndexOf("@") < inputs.email.lastIndexOf(".") &&
+      inputs.email.lastIndexOf("@") > 0 &&
+      inputs.email.indexOf("@@") == -1 &&
+      inputs.email.lastIndexOf(".") > 2 &&
+      inputs.email.length - inputs.email.lastIndexOf(".") > 2;
+    if (inputs.email == "") {
+      alert("please input a Email");
+    } else if (!validEmail) {
+      alert("please input a valid email");
+    } else if (list.some((e) => e == inputs.email)) {
+      alert("email already added");
+    } else {
+      const newList = list.concat(inputs.email);
+      setlist(newList);
+      setInputs((previousState) => {
+        return { ...previousState, email: "" };
+      });
+    }
   };
 
+  //handle submisson of form
   const handleSubmit = (event) => {
     event.preventDefault();
-    // alert(
-    //   inputs.meetingName +
-    //     "\n" +
-    //     inputs.startDateTime +
-    //     "\n" +
-    //     inputs.endDateTime +
-    //     "\n"+list,
-    // );
-    console.log(
-      inputs.meetingName +
-        "\n" +
-        inputs.startDateTime +
-        "\n" +
-        inputs.endDateTime +
-        "\n" +
-        list,
-    );
+
+    if (submitValidation()) {
+      console.log(
+        inputs.meetingName +
+          "\n" +
+          inputs.startDateTime +
+          "\n" +
+          inputs.endDateTime +
+          "\n" +
+          list,
+      );
+    }
   };
 
+  //calling addMember function when user presses enter on add participent field
   const handleKeyPress = (event) => {
     if (event.key === "Enter") {
-      // console.log("enter");
       event.preventDefault();
-      handleAddMember();
+      AddMember();
     }
+  };
+  //remove participent from list when selected
+  const handleParticipent = (event) => {
+    const value = event.target.value;
+    const newList = list.filter((item) => item !== value);
+    setlist(newList);
   };
 
   return (
@@ -69,7 +111,6 @@ export default function Create() {
                 placeholder="Meeting Name"
                 value={inputs.meetingName || ""}
                 onChange={handleChange}
-                required
                 className=" w-full  border outline-none focus:border-black border-gray-200 rounded p-3 mb-4"></input>
 
               <label htmlFor="startDateTime" className="mx-1">
@@ -81,7 +122,6 @@ export default function Create() {
                 id="startDateTime"
                 value={inputs.startDateTime || ""}
                 onChange={handleChange}
-                required
                 className=" w-full  border outline-none focus:border-black border-gray-200 rounded p-3 mb-4"></input>
 
               <label htmlFor="endDateTime" className="mx-1">
@@ -93,7 +133,6 @@ export default function Create() {
                 id="endDateTime"
                 value={inputs.endDateTime || ""}
                 onChange={handleChange}
-                required
                 className=" w-full  border outline-none focus:border-black border-gray-200 rounded p-3 mb-4"></input>
 
               <label htmlFor="email" className="mx-1">
@@ -109,24 +148,16 @@ export default function Create() {
                 onKeyPress={handleKeyPress}
                 className=" w-full  border outline-none focus:border-black border-gray-200 rounded p-3 mb-6"></input>
 
-              {/* {list.map((list, index) => (
-                <table key={index} className="border table-auto">
-                  <tr>
-                    <td>{list}</td>
-                    <td className="justify-center">
-                      <button type="button" className="w-fit border text-xs bg-blue-600 hover:bg-white transition hover:text-blue-600 hover:border-blue-600 text-white font-semibold rounded p-3 mb-6">delete</button>
-                    </td>
-                  </tr>
-                </table>
-              ))} */}
-
               <label htmlFor="participent" className="mx-1">
-                Patricipents
+                Participents
               </label>
               <select
                 id="participent"
+                value=""
                 name="participent"
+                onChange={handleParticipent}
                 className=" w-full  border outline-none focus:border-black border-gray-200 rounded p-3 mb-6">
+                <option value=""> Remove Participents</option>
                 {list.map((list, index) => (
                   <option key={index} value={list}>
                     {list}
