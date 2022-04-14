@@ -1,16 +1,25 @@
 import React, { useState } from "react";
 import { Header } from "../components";
+import { MultiSelect } from "react-multi-select-component";
 
 export default function Create() {
-  //handle current value inserted by user
+  //handle values inserted by user
   const [inputs, setInputs] = useState({
     meetingName: "",
     startDateTime: "",
     endDateTime: "",
-    email: "",
   });
-  //handle the emails already added
-  const [list, setlist] = useState([]);
+
+  //handle participent emails seleted by user
+  const [participent, setParticipent] = useState([]);
+
+  const emails = [
+    { label: "test1@gmail.com", value: "test1@gmail.com" },
+    { label: "test2@gmail.com", value: "test2@gmail.com" },
+    { label: "test3@gmail.com", value: "test3@gmail.com" },
+    { label: "test4@gmail.com", value: "test4@gmail.com" },
+    { label: "test5@gmail.com", value: "test5@gmail.com" },
+  ];
 
   //validate meetingName,startDateTime,endingDateTime
   const submitValidation = () => {
@@ -35,29 +44,6 @@ export default function Create() {
     setInputs((values) => ({ ...values, [name]: value }));
   };
 
-  //handle validating and adding email to the list
-  const AddMember = () => {
-    const validEmail =
-      inputs.email.lastIndexOf("@") < inputs.email.lastIndexOf(".") &&
-      inputs.email.lastIndexOf("@") > 0 &&
-      inputs.email.indexOf("@@") == -1 &&
-      inputs.email.lastIndexOf(".") > 2 &&
-      inputs.email.length - inputs.email.lastIndexOf(".") > 2;
-    if (inputs.email == "") {
-      alert("please input a Email");
-    } else if (!validEmail) {
-      alert("please input a valid email");
-    } else if (list.some((e) => e == inputs.email)) {
-      alert("email already added");
-    } else {
-      const newList = list.concat(inputs.email);
-      setlist(newList);
-      setInputs((previousState) => {
-        return { ...previousState, email: "" };
-      });
-    }
-  };
-
   //handle submisson of form
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -70,23 +56,9 @@ export default function Create() {
           "\n" +
           inputs.endDateTime +
           "\n" +
-          list,
+          participent.map((i) => i.value),
       );
     }
-  };
-
-  //calling addMember function when user presses enter on add participent field
-  const handleKeyPress = (event) => {
-    if (event.key === "Enter") {
-      event.preventDefault();
-      AddMember();
-    }
-  };
-  //remove participent from list when selected
-  const handleParticipent = (event) => {
-    const value = event.target.value;
-    const newList = list.filter((item) => item !== value);
-    setlist(newList);
   };
 
   return (
@@ -111,7 +83,7 @@ export default function Create() {
                 placeholder="Meeting Name"
                 value={inputs.meetingName || ""}
                 onChange={handleChange}
-                className=" w-full  border outline-none focus:border-black border-gray-200 rounded p-3 mb-4"></input>
+                className=" w-full  border outline-none focus:border-blue-500 border-gray-200 rounded p-3 mb-4"></input>
 
               <label htmlFor="startDateTime" className="mx-1">
                 Starting Time
@@ -122,7 +94,7 @@ export default function Create() {
                 id="startDateTime"
                 value={inputs.startDateTime || ""}
                 onChange={handleChange}
-                className=" w-full  border outline-none focus:border-black border-gray-200 rounded p-3 mb-4"></input>
+                className=" w-full  border outline-none focus:border-blue-500 border-gray-200 rounded p-3 mb-4"></input>
 
               <label htmlFor="endDateTime" className="mx-1">
                 End Time
@@ -133,37 +105,18 @@ export default function Create() {
                 id="endDateTime"
                 value={inputs.endDateTime || ""}
                 onChange={handleChange}
-                className=" w-full  border outline-none focus:border-black border-gray-200 rounded p-3 mb-4"></input>
-
-              <label htmlFor="email" className="mx-1">
-                Add Patricipents{" "}
-              </label>
-              <input
-                type="email"
-                name="email"
-                id="email"
-                placeholder="Add members"
-                value={inputs.email || ""}
-                onChange={handleChange}
-                onKeyPress={handleKeyPress}
-                className=" w-full  border outline-none focus:border-black border-gray-200 rounded p-3 mb-6"></input>
+                className=" w-full  border outline-none focus:border-blue-500 border-gray-200 rounded p-3 mb-4"></input>
 
               <label htmlFor="participent" className="mx-1">
                 Participents
               </label>
-              <select
-                id="participent"
-                value=""
-                name="participent"
-                onChange={handleParticipent}
-                className=" w-full  border outline-none focus:border-black border-gray-200 rounded p-3 mb-6">
-                <option value=""> Remove Participents</option>
-                {list.map((list, index) => (
-                  <option key={index} value={list}>
-                    {list}
-                  </option>
-                ))}
-              </select>
+
+              <MultiSelect
+                options={emails}
+                value={participent}
+                onChange={setParticipent}
+                className="mb-6 "
+              />
 
               <button
                 type="submit"
