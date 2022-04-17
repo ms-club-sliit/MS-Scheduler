@@ -1,57 +1,51 @@
 import Image from "next/image";
+import Link from "next/link";
 export default function MeetingCard() {
   return (
-    <div className="container relative inset-0 flex flex-wrap items-start w my-12 px-10">
-      <div className="lg:w-1/4 w-full lg:pr-3 ">
-        <div className="bg-gray-200 rounded-md">
-          <div className="flex px-6">
-            <div className="leading-relaxed pt-6 text-black flex">
-              <h3 className="text-2xl  text-black mb-1 ">
-                Weekly dev meeting [mandatory]
-              </h3>
-            </div>
+    <div className="group bg-slate-100 rounded w-full relative">
+      <div className="m-5 flex flex-col gap-3">
+        <h3 className="text-2xl font-semibold leading-[26px] text-black">
+          Weekly dev meeting [mandatory]
+        </h3>
+        <div className="text-black/60 flex flex-col">
+          <span className="text-xl">Tuesday, April 12</span>
+          <span className="text-xl">7:00pm - 8:00pm</span>
+        </div>
+        <div className="flex">
+          <div className="rounded-full w-8 h-8 justify-center items-center -ml-2 border border-slate-200  bg-white text-center">
+            A
           </div>
-          <div className="leading-relaxed px-6 text-black opacity-60">
-            <span className="text-xl">Tuesday, April 12</span>
-            <br />
-            <span className="text-xl">7:00pm - 8:00pm</span>
+          <div className="rounded-full w-8 h-8 justify-center items-center -ml-2 border border-slate-200  bg-white text-center">
+            A
           </div>
-          <div className="flex px-6 pt-2">
-            <div className="rounded-full w-8 h-8 justify-center items-center -ml-2 border border-slate-400  bg-white z-0 text-center flex p-1">
-              A
-            </div>
-            <div className="rounded-full w-8 h-8 justify-center items-center -ml-2 border border-slate-400  bg-white z-10 text-center flex p-1">
-              A
-            </div>
-            <div className="rounded-full w-8 h-8 justify-center items-center -ml-2 border border-slate-400  bg-white z-20 text-center flex p-1">
-              A
-            </div>
-            <div className="rounded-full w-8 h-8 justify-center items-center -ml-2 border border-slate-400  bg-white z-30 text-center flex p-1">
-              A
-            </div>
-            <div className="rounded-full w-8 h-8 justify-center items-center -ml-2 border border-slate-400  bg-white z-40 text-center flex p-1">
-              A
-            </div>
-            <div className="rounded-full w-8 h-8 justify-center items-center -ml-2  border border-slate-400 flex bg-white z-50 text-center p-1">
-              +3
-            </div>
+          <div className="rounded-full w-8 h-8 justify-center items-center -ml-2 border border-slate-200  bg-white text-center">
+            A
           </div>
-          <div className="content-center top-32 flex justify-center pt-4">
-            <a
-              href="#"
-              className="text-white w-96 text-center font-bold px-4 py-3  rounded rounded-t-none bg-rose-500 hover:bg-rose-800 hover:text-white hover:border-rose-700 hover:border-1">
-              Join Now
-            </a>
-            <div className="absolute z-10 top-5 left-80 pl-7 flex justify-end py-2 px-3 items-center">
-              <Image
-                src="/icons/close-icon.svg"
-                width={25}
-                height={25}
-                alt="closing-icon"
-              />
-            </div>
+          <div className="rounded-full w-8 h-8 justify-center items-center -ml-2 border border-slate-200  bg-white text-center">
+            A
+          </div>
+          <div className="rounded-full w-8 h-8 justify-center items-center -ml-2 border border-slate-200  bg-white text-center">
+            A
+          </div>
+          <div className="rounded-full w-8 h-8 justify-center items-center -ml-2  border border-slate-200  bg-white text-center">
+            +3
           </div>
         </div>
+      </div>
+      <Link href="#">
+        <a className="text-white w-full block text-center font-bold py-3 rounded-b bg-rose-500 hover:bg-rose-600 transition">
+          Join Now
+        </a>
+      </Link>
+      <div className="group-hover:block hidden absolute z-10 right-4 top-4">
+        <button>
+          <Image
+            src="/icons/close-icon.svg"
+            width={25}
+            height={25}
+            alt="closing-icon"
+          />
+        </button>
       </div>
     </div>
   );
