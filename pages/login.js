@@ -1,6 +1,37 @@
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "../store/auth";
 import { Header } from "../components";
 
 export default function Login() {
+  const { isLoggedIn } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+
+  const initialValues = {
+    username: "",
+    password: "",
+  };
+
+  if (isLoggedIn) {
+    window.location.href = "/meetings";
+  }
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    dispatch(
+      login({
+        userName: e.target.userName.value,
+        password: e.target.password.value,
+      }),
+    )
+      .then(() => {
+        // window.location.href = '/';
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
@@ -12,21 +43,27 @@ export default function Login() {
             Meeting Scheduler
           </h2>
         </div>
-        <div className="flex flex-col gap-3 w-full max-w-sm">
+        <form
+          onSubmit={handleLogin}
+          className="flex flex-col gap-3 w-full max-w-sm">
           <input
-            type="email"
+            type="text"
+            name="userName"
             className="w-full border outline-none focus:border-black border-gray-200 rounded p-3"
             placeholder="Email"
           />
           <input
             type="password"
+            name="password"
             className="w-full border outline-none focus:border-black border-gray-200 rounded p-3"
             placeholder="Password"
           />
-          <button className="w-full border text-lg bg-blue-600 hover:bg-white transition hover:text-blue-600 hover:border-blue-600 text-white font-semibold rounded p-3">
+          <button
+            type="submit"
+            className="w-full border text-lg bg-blue-600 hover:bg-white transition hover:text-blue-600 hover:border-blue-600 text-white font-semibold rounded p-3">
             Log in
           </button>
-        </div>
+        </form>
       </div>
     </div>
   );
