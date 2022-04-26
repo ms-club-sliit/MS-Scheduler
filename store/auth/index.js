@@ -15,6 +15,10 @@ export const login = createAsyncThunk(
   },
 );
 
+export const logout = createAsyncThunk("auth/logout", async () => {
+  authService.logout();
+});
+
 const initialState = token
   ? { isLoggedIn: true, token }
   : { isLoggedIn: false, token: null };
@@ -27,6 +31,10 @@ const authSlice = createSlice({
       state.token = action.payload.token;
     },
     [login.rejected]: (state, action) => {
+      state.isLoggedIn = false;
+      state.token = null;
+    },
+    [logout.fulfilled]: (state, action) => {
       state.isLoggedIn = false;
       state.token = null;
     },

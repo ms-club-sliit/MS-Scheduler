@@ -13,6 +13,18 @@ export const getMeetingsStore = createAsyncThunk(
   },
 );
 
+export const scheduleMeetingStore = createAsyncThunk(
+  "meetings/scheduleMeeting",
+  async (meeting, thunkAPI) => {
+    try {
+      const res = await meetingService.scheduleMeeting(meeting);
+      return res.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  },
+);
+
 const initialState = {
   meetings: [],
 };
@@ -26,6 +38,12 @@ export const meetingSlice = createSlice({
     },
     [getMeetingsStore.rejected]: (state, action) => {
       state.meetings = [];
+    },
+    [scheduleMeetingStore.fulfilled]: (state, action) => {
+      state.meetings.push(action.payload);
+    },
+    [scheduleMeetingStore.rejected]: (state, action) => {
+      // state.meetings = [];
     },
   },
 });

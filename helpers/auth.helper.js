@@ -1,4 +1,5 @@
 import axios from "axios";
+import Router from "next/router";
 
 const login = (userName, password) => {
   return axios
@@ -16,6 +17,8 @@ const login = (userName, password) => {
 
 const logout = () => {
   localStorage.removeItem("token");
+  Router.push("/login");
+  console.log("logout");
 };
 
 const authHeader = () => {

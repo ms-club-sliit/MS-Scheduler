@@ -1,19 +1,14 @@
-import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../store/auth";
 import { Header } from "../components";
+import Router from "next/router";
 
 export default function Login() {
   const { isLoggedIn } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
-  const initialValues = {
-    username: "",
-    password: "",
-  };
-
   if (isLoggedIn) {
-    window.location.href = "/meetings";
+    Router.push("/");
   }
 
   const handleLogin = (e) => {
@@ -25,7 +20,7 @@ export default function Login() {
       }),
     )
       .then(() => {
-        // window.location.href = '/';
+        Router.push("/");
       })
       .catch((error) => {
         console.log(error);

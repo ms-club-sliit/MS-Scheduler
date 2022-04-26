@@ -1,8 +1,13 @@
 import React, { useState } from "react";
 import { Header } from "../components";
 import { MultiSelect } from "react-multi-select-component";
+import { useDispatch } from "react-redux";
+import { scheduleMeetingStore } from "../store/meetings";
+import Router from "next/router";
 
 export default function Create() {
+  const dispatch = useDispatch();
+
   //handle values inserted by user
   const [inputs, setInputs] = useState({
     meetingName: "",
@@ -19,6 +24,7 @@ export default function Create() {
     { label: "test3@gmail.com", value: "test3@gmail.com" },
     { label: "test4@gmail.com", value: "test4@gmail.com" },
     { label: "test5@gmail.com", value: "test5@gmail.com" },
+    { label: "it19963402@my.sliit.lk", value: "it19963402@my.sliit.lk" },
   ];
 
   //validate meetingName,startDateTime,endingDateTime
@@ -49,15 +55,21 @@ export default function Create() {
     event.preventDefault();
 
     if (submitValidation()) {
-      console.log(
-        inputs.meetingName +
-          "\n" +
-          inputs.startDateTime +
-          "\n" +
-          inputs.endDateTime +
-          "\n" +
-          participent.map((i) => i.value),
-      );
+      const meeting = {
+        meetingName: inputs.meetingName,
+        startDateTime: inputs.startDateTime,
+        endDateTime: inputs.endDateTime,
+        emailList: participent.map((i) => i.value),
+      };
+      console.log(meeting);
+      dispatch(scheduleMeetingStore(meeting))
+        .then(() => {
+          Router.push("/meetings");
+        })
+        .catch((error) => {
+          alert("Something went wrong");
+          console.log(error);
+        });
     }
   };
 
