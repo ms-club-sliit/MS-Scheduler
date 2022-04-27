@@ -19,12 +19,19 @@ export default function Create() {
   const [participent, setParticipent] = useState([]);
 
   const emails = [
-    { label: "test1@gmail.com", value: "test1@gmail.com" },
-    { label: "test2@gmail.com", value: "test2@gmail.com" },
-    { label: "test3@gmail.com", value: "test3@gmail.com" },
-    { label: "test4@gmail.com", value: "test4@gmail.com" },
-    { label: "test5@gmail.com", value: "test5@gmail.com" },
-    { label: "it19963402@my.sliit.lk", value: "it19963402@my.sliit.lk" },
+    { value: "it19132310@my.sliit.lk", label: "Lasal Hettiarchchi" },
+    { value: "it19139036@my.sliit.lk", label: "Senura Jayadeva" },
+    { value: "it19104218@my.sliit.lk", label: "Rusiru Abisheak" },
+    { value: "it19131184@my.sliit.lk", label: "Yasiru Randika" },
+    { value: "it19120980@my.sliit.lk", label: "Dilmi Palliyaguruge" },
+    { value: "it20281632@my.sliit.lk", label: "Nisal Palliyaguru" },
+    { value: "it19963402@my.sliit.lk", label: "Miyuru Gnanarathna" },
+    { value: "it19115344@my.sliit.lk", label: "Hansidu Maniyangama" },
+    { value: "it19102924@my.sliit.lk", label: "Lahiru Jayasinghe" },
+    { value: "it20633790@my.sliit.lk", label: "Susith Rupasinghe" },
+    { value: "it20006884@my.sliit.lk", label: "Shivani Rajkumar" },
+    { value: "it20224820@my.sliit.lk", label: "Upendra Ihalagedara" },
+    { value: "it20023614@my.sliit.lk", label: "Pasindu Wijesingha" },
   ];
 
   //validate meetingName,startDateTime,endingDateTime
