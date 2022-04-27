@@ -9,3 +9,4 @@ yarn.lock
 public/
 LICENSE
 README.md
+package.json

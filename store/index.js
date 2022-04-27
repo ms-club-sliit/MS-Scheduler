@@ -1,10 +1,17 @@
 import { configureStore } from "@reduxjs/toolkit";
-import counterReducer from "./counter";
+import authReducer from "./auth";
+import meetingReducer from "./meetings";
 
 const store = configureStore({
   reducer: {
-    counter: counterReducer,
+    auth: authReducer,
+    meetings: meetingReducer,
   },
+  devTools: true,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
 });
 
 export default store;
