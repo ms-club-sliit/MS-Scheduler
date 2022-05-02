@@ -18,7 +18,6 @@ const login = (userName, password) => {
 const logout = () => {
   localStorage.removeItem("token");
   Router.push("/login");
-  console.log("logout");
 };
 
 const authHeader = () => {

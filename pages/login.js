@@ -1,15 +1,28 @@
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../store/auth";
 import { Header } from "../components";
 import Router from "next/router";
+import { toast } from "react-toastify";
 
 export default function Login() {
-  const { isLoggedIn } = useSelector((state) => state.auth);
+  const state = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
-  if (isLoggedIn) {
-    Router.push("/");
-  }
+  useEffect(() => {
+    if (state.isLoggedIn) {
+      Router.push("/");
+    }
+  }, [state.isLoggedIn]);
+
+  useEffect(() => {
+    if (state.isLoggedIn && !state.error) {
+      toast.success("Login Successful!");
+    }
+    if (!state.isLoggedIn && state.error) {
+      toast.error("Login failed!");
+    }
+  }, [state.isLoggedIn, state.error]);
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -18,13 +31,7 @@ export default function Login() {
         userName: e.target.userName.value,
         password: e.target.password.value,
       }),
-    )
-      .then(() => {
-        Router.push("/");
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    );
   };
 
   return (

@@ -1,15 +1,16 @@
 import Head from "next/head";
 import { useEffect, useState } from "react";
-import { Header } from "../components";
-import MeetingCard from "../components/Meeting-card";
+import { Header, MeetingCard, Popup } from "../components";
 import { useDispatch, useSelector } from "react-redux";
 import { getMeetingsStore } from "../store/meetings";
 import Image from "next/image";
-import Router from "next/router";
+import moment from "moment";
 
 export default function Home() {
-  const state = useSelector((state) => state.meetings);
-  const [meetings, setMeetings] = useState([]);
+  const { meetings } = useSelector((state) => state.meetings);
+  const [tab, setTab] = useState("COMING_UP");
+  const [selectedMeeting, setSelectedMeeting] = useState([]);
+  const [isOpen, setIsOpen] = useState(false);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -17,11 +18,37 @@ export default function Home() {
   }, [dispatch]);
 
   useEffect(() => {
-    setMeetings(state.meetings);
-  }, [state.meetings]);
+    setSelectedMeeting(
+      meetings.filter((meeting) =>
+        moment(new Date()).isBefore(meeting.endDateTime),
+      ),
+    );
+  }, [meetings]);
 
   const handleClick = () => {
-    Router.push("/create");
+    setIsOpen(!isOpen);
+  };
+
+  const comingUp = () => {
+    if (tab !== "COMING_UP") {
+      setTab("COMING_UP");
+      setSelectedMeeting(
+        meetings.filter((meeting) =>
+          moment(new Date()).isBefore(meeting.endDateTime),
+        ),
+      );
+    }
+  };
+
+  const wrapped = () => {
+    if (tab !== "WRAPPED") {
+      setTab("WRAPPED");
+      setSelectedMeeting(
+        meetings.filter((meeting) =>
+          moment(new Date()).isAfter(meeting.endDateTime),
+        ),
+      );
+    }
   };
 
   return (
@@ -37,19 +64,28 @@ export default function Home() {
         <Header />
         <div className="w-full">
           <div className="max-w-6xl mx-auto flex px-8 mt-5 mb-3 sm:px-16">
-            <div className="px-2 py-1 bg-purple-700 rounded mr-3 text-white">
+            <button
+              onClick={comingUp}
+              className={
+                (tab === "COMING_UP"
+                  ? "bg-purple-700 text-white"
+                  : "bg-slate-100 text-gray-600") + " px-2 py-1 rounded mr-3"
+              }>
               COMING UP
-            </div>
-            <div className="px-2 py-1 bg-slate-100 rounded mr-3 text-gray-600">
+            </button>
+            <button
+              onClick={wrapped}
+              className={
+                (tab === "WRAPPED"
+                  ? "bg-purple-700 text-white"
+                  : "bg-slate-100 text-gray-600") + " px-2 py-1 rounded mr-3"
+              }>
               WRAPPED
-            </div>
-            <div className="px-2 py-1 bg-slate-100 rounded mr-3 text-gray-600">
-              DELETED
-            </div>
+            </button>
           </div>
           <div className="max-w-6xl mx-auto px-8 mb-16 sm:px-16">
             <div className="w-full grid sm:grid-cols-2 lg:grid-cols-3 gap-4 flex-wrap">
-              {meetings.map((meeting, key) => (
+              {selectedMeeting.map((meeting, key) => (
                 <MeetingCard key={key} data={meeting} />
               ))}
             </div>
@@ -57,13 +93,18 @@ export default function Home() {
           <div className="max-w-6xl mx-auto px-8 sm:px-16 fixed w-full bottom-8 right-1/2 translate-x-1/2 flex justify-end">
             <button
               onClick={handleClick}
-              className="flex flex-row gap-2 bg-purple-200 py-3 pl-4 pr-5 rounded-lg items-center border border-black/10 hover:bg-purple-100">
+              className="flex flex-row gap-2 bg-purple-700 py-3 pl-4 pr-5 rounded-lg items-center hover:bg-blue-700">
               <Image src="/icons/add-icon.svg" width={30} height={30} />
-              <span className="font-bold text-lg">New</span>
+              <span className="font-semibold text-lg text-white">New</span>
             </button>
           </div>
         </div>
       </div>
+      {isOpen && (
+        <div className="w-full h-full fixed overflow-y-auto z-10 top-0 bg-white/50 backdrop-blur-[50px] flex flex-col justify-center items-center">
+          <Popup close={handleClick} />
+        </div>
+      )}
     </>
   );
 }

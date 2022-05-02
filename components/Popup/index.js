@@ -1,56 +1,58 @@
 import React, { useState } from "react";
-import { Header } from "../components";
 import { MultiSelect } from "react-multi-select-component";
 import { useDispatch } from "react-redux";
-import { scheduleMeetingStore } from "../store/meetings";
-import Router from "next/router";
+import { scheduleMeetingStore, getMeetingsStore } from "../../store/meetings";
+import Image from "next/image";
+import { toast } from "react-toastify";
 
-export default function Create() {
+export default function Popup(props) {
   const dispatch = useDispatch();
 
-  //handle values inserted by user
   const [inputs, setInputs] = useState({
     meetingName: "",
     startDateTime: "",
     endDateTime: "",
   });
 
-  //handle participent emails seleted by user
   const [participent, setParticipent] = useState([]);
 
   const emails = [
-    { label: "test1@gmail.com", value: "test1@gmail.com" },
-    { label: "test2@gmail.com", value: "test2@gmail.com" },
-    { label: "test3@gmail.com", value: "test3@gmail.com" },
-    { label: "test4@gmail.com", value: "test4@gmail.com" },
-    { label: "test5@gmail.com", value: "test5@gmail.com" },
-    { label: "it19963402@my.sliit.lk", value: "it19963402@my.sliit.lk" },
+    { value: "it19132310@my.sliit.lk", label: "Lasal Hettiarchchi" },
+    { value: "it19139036@my.sliit.lk", label: "Senura Jayadeva" },
+    { value: "it19104218@my.sliit.lk", label: "Rusiru Abisheak" },
+    { value: "it19131184@my.sliit.lk", label: "Yasiru Randika" },
+    { value: "it19120980@my.sliit.lk", label: "Dilmi Palliyaguruge" },
+    { value: "it20281632@my.sliit.lk", label: "Nisal Palliyaguru" },
+    { value: "it19963402@my.sliit.lk", label: "Miyuru Gnanarathna" },
+    { value: "it19115344@my.sliit.lk", label: "Hansidu Maniyangama" },
+    { value: "it19102924@my.sliit.lk", label: "Lahiru Jayasinghe" },
+    { value: "it20633790@my.sliit.lk", label: "Susith Rupasinghe" },
+    { value: "it20006884@my.sliit.lk", label: "Shivani Rajkumar" },
+    { value: "it20224820@my.sliit.lk", label: "Upendra Ihalagedara" },
+    { value: "it20023614@my.sliit.lk", label: "Pasindu Wijesingha" },
   ];
 
-  //validate meetingName,startDateTime,endingDateTime
   const submitValidation = () => {
     if (inputs.meetingName == "") {
-      alert("Please input meeting name");
+      toast.error("Please input meeting name");
       return false;
     } else if (inputs.startDateTime == "") {
-      alert("please input Starting Date and Time");
+      toast.error("please input Starting Date and Time");
       return false;
     } else if (inputs.endDateTime == "") {
-      alert("please input Ending Date and Time");
+      toast.error("please input Ending Date and Time");
       return false;
     } else {
       return true;
     }
   };
 
-  //handle when a user change value in a input field
   const handleChange = (event) => {
     const name = event.target.name;
     const value = event.target.value;
     setInputs((values) => ({ ...values, [name]: value }));
   };
 
-  //handle submisson of form
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -61,26 +63,26 @@ export default function Create() {
         endDateTime: inputs.endDateTime,
         emailList: participent.map((i) => i.value),
       };
-      console.log(meeting);
       dispatch(scheduleMeetingStore(meeting))
         .then(() => {
-          Router.push("/meetings");
+          props.close();
+          toast.success("Meeting schedule success!");
+          dispatch(getMeetingsStore());
         })
-        .catch((error) => {
-          alert("Something went wrong");
-          console.log(error);
+        .catch(() => {
+          props.close();
+          toast.error("Something went wrong!");
         });
     }
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <Header />
-      <div className="max-w-fit px-8 flex flex-col mx-auto justify-center my-10 gap-10">
+    <div className="mx-auto relative">
+      <div className="flex flex-col justify-center p-4 bg-white gap-4 m-8 md:m-16 border border-black/10 rounded-md">
         <div>
-          <h2 className="text-4xl font-medium text-center leading-tight">
+          <h4 className="text-2xl font-medium text-center leading-tight">
             Schedule a Meeting
-          </h2>
+          </h4>
         </div>
         <div className="flex flex-col w-full max-w-sm ">
           <form onSubmit={handleSubmit}>
@@ -138,6 +140,19 @@ export default function Create() {
             </div>
           </form>
         </div>
+      </div>
+      <div className="absolute z-10 -right-3 -top-3 m-8 md:m-16">
+        <button
+          onClick={props.close}
+          className="m-0 p-0 border border-black/10 w-[27px] h-[27px] rounded-full shadow-sm">
+          <Image
+            src="/icons/close-icon.svg"
+            width={25}
+            height={25}
+            alt="closing-icon"
+            className="border border-black/50 rounded-full"
+          />
+        </button>
       </div>
     </div>
   );

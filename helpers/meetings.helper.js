@@ -9,11 +9,9 @@ const getMeetings = () => {
       headers: authService.authHeader(),
     })
     .then((response) => {
-      console.log("getMeetings", response);
       return response;
     })
     .catch((error) => {
-      console.log("error: ", error);
       store.dispatch(logout());
     });
 };
@@ -28,12 +26,9 @@ const scheduleMeeting = (meeting) => {
       },
     )
     .then((response) => {
-      console.log("scheduleMeeting", response);
       return response;
     })
-    .catch((error) => {
-      console.log("error: ", error);
-    });
+    .catch((error) => {});
 };
 
 const meetingService = { getMeetings, scheduleMeeting };

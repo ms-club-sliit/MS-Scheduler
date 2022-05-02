@@ -20,8 +20,8 @@ export const logout = createAsyncThunk("auth/logout", async () => {
 });
 
 const initialState = token
-  ? { isLoggedIn: true, token }
-  : { isLoggedIn: false, token: null };
+  ? { isLoggedIn: true, token, error: null }
+  : { isLoggedIn: false, token: null, error: null };
 const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -29,14 +29,17 @@ const authSlice = createSlice({
     [login.fulfilled]: (state, action) => {
       state.isLoggedIn = true;
       state.token = action.payload.token;
+      state.error = null;
     },
     [login.rejected]: (state, action) => {
       state.isLoggedIn = false;
       state.token = null;
+      state.error = action.payload;
     },
     [logout.fulfilled]: (state, action) => {
       state.isLoggedIn = false;
       state.token = null;
+      state.error = null;
     },
   },
 });
