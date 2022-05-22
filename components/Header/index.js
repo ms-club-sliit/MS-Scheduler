@@ -39,7 +39,7 @@ export default function Header() {
                   Login
                 </a>
               </Link>
-              <Link href="#">
+              <Link href="/signup">
                 <a className="bg-purple-700 border border-purple-700 transition hover:text-purple-700 hover:bg-white rounded text-white py-1 px-3">
                   Signup
                 </a>

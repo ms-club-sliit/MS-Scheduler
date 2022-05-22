@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { useEffect, useState } from "react";
-import { Header, MeetingCard, Popup } from "../components";
+import { Header, MeetingCard, MeetingDetails, Popup } from "../components";
 import { useDispatch, useSelector } from "react-redux";
 import { getMeetingsStore } from "../store/meetings";
 import Image from "next/image";

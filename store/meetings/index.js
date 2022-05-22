@@ -25,8 +25,21 @@ export const scheduleMeetingStore = createAsyncThunk(
   },
 );
 
+export const selectedMeetingIdStore = createAsyncThunk(
+  "meetings/scheduleMeeting/selectMeetingId",
+  async (selectedMeeting, thunkAPI) => {
+    try {
+      return selectedMeeting;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  },
+);
+
 const initialState = {
   meetings: [],
+  showMeetingModalStaus: false,
+  selectedMeeting: null,
 };
 
 export const meetingSlice = createSlice({
@@ -44,6 +57,10 @@ export const meetingSlice = createSlice({
     },
     [scheduleMeetingStore.rejected]: (state, action) => {
       // state.meetings = [];
+    },
+    [selectedMeetingIdStore.fulfilled]: (state, action) => {
+      state.showMeetingModalStaus = action.payload.showModal;
+      state.selectedMeeting = action.payload.meetingDetails;
     },
   },
 });
