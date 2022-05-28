@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   selectedDeleteMeetingIdStore,
   deleteScheduleMeetingStore,
+  getMeetingsStore,
 } from "../../store/meetings";
 import Image from "next/image";
 
@@ -85,6 +86,7 @@ export default function MeetingDelete(props) {
                                   selectedDeleteMeeting,
                                 ),
                               );
+                              dispatch(getMeetingsStore());
                             }}
                             type="submit"
                             className="border text-sm bg-blue-600 hover:bg-white transition hover:text-blue-600 hover:border-blue-600 text-white font-semibold rounded p-3">
