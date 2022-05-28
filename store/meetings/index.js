@@ -36,10 +36,35 @@ export const selectedMeetingIdStore = createAsyncThunk(
   },
 );
 
+export const selectedDeleteMeetingIdStore = createAsyncThunk(
+  "meetings/scheduleMeeting/selectDeleteMeetingId",
+  async (selectedDeleteMeeting, thunkAPI) => {
+    try {
+      return selectedDeleteMeeting;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  },
+);
+
+export const deleteScheduleMeetingStore = createAsyncThunk(
+  "meetings/scheduleMeeting/delete",
+  async (deleteMeeting, thunkAPI) => {
+    try {
+      await meetingService.deleteScheduleMeeting(deleteMeeting.meetingId);
+      return deleteMeeting.showModal;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  },
+);
+
 const initialState = {
   meetings: [],
   showMeetingModalStaus: false,
   selectedMeeting: null,
+  showDeleteMeetingModalStaus: false,
+  selectedDeleteMeeting: null,
 };
 
 export const meetingSlice = createSlice({
@@ -61,6 +86,16 @@ export const meetingSlice = createSlice({
     [selectedMeetingIdStore.fulfilled]: (state, action) => {
       state.showMeetingModalStaus = action.payload.showModal;
       state.selectedMeeting = action.payload.meetingDetails;
+    },
+    [selectedDeleteMeetingIdStore.fulfilled]: (state, action) => {
+      state.showDeleteMeetingModalStaus = action.payload.showDeleteModal;
+      state.selectedDeleteMeeting = action.payload.deleteMeetingDetails;
+    },
+    [deleteScheduleMeetingStore.fulfilled]: (state, action) => {
+      state.showDeleteMeetingModalStaus = action.payload;
+    },
+    [deleteScheduleMeetingStore.rejected]: (state, action) => {
+      state.showDeleteMeetingModalStaus = action.payload;
     },
   },
 });

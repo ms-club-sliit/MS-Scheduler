@@ -31,5 +31,22 @@ const scheduleMeeting = (meeting) => {
     .catch((error) => {});
 };
 
-const meetingService = { getMeetings, scheduleMeeting };
+const deleteScheduleMeeting = (meetingId) => {
+  console.log(meetingId);
+  return axios
+    .delete(
+      process.env.NEXT_PUBLIC_API_ENDPOINT +
+        "/api/meeting/internal/permanentdelete/" +
+        meetingId,
+      {
+        headers: authService.authHeader(),
+      },
+    )
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {});
+};
+
+const meetingService = { getMeetings, scheduleMeeting, deleteScheduleMeeting };
 export default meetingService;
