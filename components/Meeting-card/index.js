@@ -3,12 +3,17 @@ import Image from "next/image";
 import Link from "next/link";
 import moment from "moment";
 import MeetingDetails from "../Meeting-details";
+import MeetingDelete from "../Meeting-delete";
 import { useDispatch, useSelector } from "react-redux";
-import { selectedMeetingIdStore } from "../../store/meetings";
+import {
+  selectedMeetingIdStore,
+  selectedDeleteMeetingIdStore,
+} from "../../store/meetings";
 
 export default function MeetingCard(props) {
   const { data } = props;
   const [showModal, setShowModal] = React.useState(false);
+  const [showDeleteModal, setShowDeleteModal] = React.useState(false);
   const dispatch = useDispatch();
 
   const selectMeeting = (modalStatus, meetingDetails) => {
@@ -17,6 +22,14 @@ export default function MeetingCard(props) {
       meetingDetails: meetingDetails,
     };
     dispatch(selectedMeetingIdStore(selectedMeeting));
+  };
+
+  const selectDeleteMeeting = (modalStatus, meetingDetails) => {
+    const selectedDeleteMeeting = {
+      showDeleteModal: modalStatus,
+      deleteMeetingDetails: meetingDetails,
+    };
+    dispatch(selectedDeleteMeetingIdStore(selectedDeleteMeeting));
   };
 
   return (
@@ -63,7 +76,7 @@ export default function MeetingCard(props) {
         </a>
       </Link>
       <div className="group-hover:block hidden absolute z-10 right-4 top-4">
-        <button>
+        <button onClick={() => selectDeleteMeeting(!showDeleteModal, data)}>
           <Image
             src="/icons/close-icon.svg"
             width={25}
@@ -73,6 +86,7 @@ export default function MeetingCard(props) {
         </button>
       </div>
       <MeetingDetails />
+      <MeetingDelete />
     </div>
   );
 }
