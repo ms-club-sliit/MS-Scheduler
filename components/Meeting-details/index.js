@@ -97,7 +97,6 @@ export default function MeetingDetails(props) {
         .then(() => {
           dispatch(selectedMeetingIdStore(!showModal));
           toast.success("Meeting Edited Successfully!");
-          // dispatch(getMeetingsStore());
         })
         .catch(() => {
           dispatch(selectedMeetingIdStore(!showModal));
