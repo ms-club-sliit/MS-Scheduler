@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { selectedMeetingIdStore } from "../../store/meetings";
+import {
+  selectedMeetingIdStore,
+  editScheduleMeetingStore,
+} from "../../store/meetings";
 import { MultiSelect } from "react-multi-select-component";
 import Image from "next/image";
+import { toast } from "react-toastify";
 
 export default function MeetingDetails(props) {
   const { showMeetingModalStaus, selectedMeeting } = useSelector(
@@ -82,19 +86,21 @@ export default function MeetingDetails(props) {
 
     if (submitValidation()) {
       const meeting = {
+        id: selectedMeeting._id,
         meetingName: inputs.meetingName,
         startDateTime: inputs.startDateTime,
         endDateTime: inputs.endDateTime,
         emailList: participent.map((i) => i.value),
       };
-      dispatch(scheduleMeetingStore(meeting))
+
+      dispatch(editScheduleMeetingStore(meeting))
         .then(() => {
-          props.close();
-          toast.success("Meeting schedule success!");
-          dispatch(getMeetingsStore());
+          dispatch(selectedMeetingIdStore(!showModal));
+          toast.success("Meeting Edited Successfully!");
+          // dispatch(getMeetingsStore());
         })
         .catch(() => {
-          props.close();
+          dispatch(selectedMeetingIdStore(!showModal));
           toast.error("Something went wrong!");
         });
     }

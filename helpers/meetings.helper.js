@@ -31,5 +31,21 @@ const scheduleMeeting = (meeting) => {
     .catch((error) => {});
 };
 
-const meetingService = { getMeetings, scheduleMeeting };
+// Edit meeting by id
+const editScheduleMeeting = (meeting) => {
+  return axios
+    .put(
+      process.env.NEXT_PUBLIC_API_ENDPOINT + `/api/meeting/${meeting.id}`,
+      meeting,
+      {
+        headers: authService.authHeader(),
+      },
+    )
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {});
+};
+
+const meetingService = { getMeetings, scheduleMeeting, editScheduleMeeting };
 export default meetingService;
