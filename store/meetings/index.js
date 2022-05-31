@@ -36,6 +36,18 @@ export const selectedMeetingIdStore = createAsyncThunk(
   },
 );
 
+export const editScheduleMeetingStore = createAsyncThunk(
+  "meetings/editScheduleMeeting",
+  async (meeting, thunkAPI) => {
+    try {
+      const res = await meetingService.editScheduleMeeting(meeting);
+      return res.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  },
+);
+
 export const selectedDeleteMeetingIdStore = createAsyncThunk(
   "meetings/scheduleMeeting/selectDeleteMeetingId",
   async (selectedDeleteMeeting, thunkAPI) => {
@@ -86,6 +98,19 @@ export const meetingSlice = createSlice({
     [selectedMeetingIdStore.fulfilled]: (state, action) => {
       state.showMeetingModalStaus = action.payload.showModal;
       state.selectedMeeting = action.payload.meetingDetails;
+    },
+
+    [editScheduleMeetingStore.fulfilled]: (state, action) => {
+      state.meetings = state.meetings.map((meeting) => {
+        if (meeting._id === action.payload._id) {
+          return action.payload;
+        }
+        return meeting;
+      });
+    },
+
+    [editScheduleMeetingStore.rejected]: (state, action) => {
+      // state.meetings = [];
     },
     [selectedDeleteMeetingIdStore.fulfilled]: (state, action) => {
       state.showDeleteMeetingModalStaus = action.payload.showDeleteModal;

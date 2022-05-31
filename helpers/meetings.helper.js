@@ -31,6 +31,22 @@ const scheduleMeeting = (meeting) => {
     .catch((error) => {});
 };
 
+// Edit meeting by id
+const editScheduleMeeting = (meeting) => {
+  return axios
+    .put(
+      process.env.NEXT_PUBLIC_API_ENDPOINT + `/api/meeting/${meeting.id}`,
+      meeting,
+      {
+        headers: authService.authHeader(),
+      },
+    )
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {});
+};
+
 const deleteScheduleMeeting = (meetingId) => {
   console.log(meetingId);
   return axios
@@ -48,5 +64,10 @@ const deleteScheduleMeeting = (meetingId) => {
     .catch((error) => {});
 };
 
-const meetingService = { getMeetings, scheduleMeeting, deleteScheduleMeeting };
+const meetingService = {
+  getMeetings,
+  scheduleMeeting,
+  editScheduleMeeting,
+  deleteScheduleMeeting,
+};
 export default meetingService;
